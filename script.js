@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
 
     const productForm = document.getElementById('productForm');
-    productForm.addEventListener('submit', function(e) {
+    productForm.addEventListener('submit', function (e) {
         e.preventDefault();
         addProduct();
     });
@@ -26,7 +26,19 @@ function fetchProducts() {
 }
 
 function addProduct() {
-    const formData = new FormData(document.getElementById('productForm'));
+    const product_name = document.getElementById('product_name').value;
+    const quantity = document.getElementById('quantity').value;
+    const price = document.getElementById('price').value;
+
+    console.log(product_name, quantity, price);
+
+    const formData = new FormData(); // Initialize FormData without arguments
+    formData.append('product_name', product_name);
+    formData.append('quantity', quantity);
+    formData.append('price', price);
+
+    console.log([...formData]); // Log formData for debugging
+
     fetch('add_product.php', {
         method: 'POST',
         body: formData
@@ -36,5 +48,6 @@ function addProduct() {
         console.log(data);
         fetchProducts();
         document.getElementById('productForm').reset();
-    });
+    })
+    .catch(error => console.error('Error:', error));
 }
